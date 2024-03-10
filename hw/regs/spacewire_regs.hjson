@@ -1,0 +1,71 @@
+// Copyright 2022 ETH Zurich and University of Bologna.
+// Solderpad Hardware License, Version 0.51, see LICENSE for details.
+// SPDX-License-Identifier: SHL-0.51
+// Licensed under Solderpad Hardware License, Version 0.51, see LICENSE for details.
+//
+// Yvan Tortorella <yvan.tortorella@{unibo.it, ext.esa.int}>
+
+{
+  name: "spacewire"
+  clock_primary: "clk_i"
+  bus_interfaces: [
+    { protocol: "reg_iface", direction: "device" }
+  ],
+  regwidth: 32
+  registers: [
+
+    { multireg:
+      { name:     "spw_config"
+        desc:     "Software-controllable onfiguration registers."
+        swaccess: "rw"
+        hwaccess: "none"
+        count:    "16"
+        cname:    "spw_config"
+        fields: [
+          { bits: "31:0", resval: "0", name: "spw_config", desc: "Software-controllable onfiguration registers." }
+        ]
+      }
+    }
+
+    { name:     "spw_state"
+      desc:     "State register (busy/free)."
+      swaccess: "ro"
+      hwaccess: "hwo"
+      hwqe:     "true"
+      hwext:    "true"
+      fields: [
+        { bits: "0"
+          name: "spw_state"
+          desc: "State register (busy/free)."
+          enum: [
+            { value: "0", name: "free", desc: "SpaceWire is ready for issuing a task"     }
+            { value: "1", name: "busy", desc: "SpaceWire is busy, wait for issuing tasks" }
+          ]
+        }
+      ]
+    }
+
+    { name:     "generic_reg_0"
+      desc:     "Generic register 0"
+      swaccess: "ro"
+      hwaccess: "hwo"
+      hwqe:     "true"
+      hwext:    "true"
+      fields: [
+        { bits: "31:0", name: "generic_reg_0", desc: "Generic register 0" }
+      ]
+    }
+
+    { name:     "generic_reg_1"
+      desc:     "Generic register 1"
+      swaccess: "rw"
+      hwaccess: "none"
+      hwqe:     "true"
+      hwext:    "true"
+      fields: [
+        { bits: "31:0", name: "generic_reg_1", desc: "Generic register 1" }
+      ]
+    }
+
+  ]
+}
